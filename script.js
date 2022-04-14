@@ -12,31 +12,67 @@ function calculate(inputData) {
     return evaluatePostfix(postfix).toString();
 }
 
-function infixToPostfix(infix) { // not finished yet
+function infixToPostfix(infix) {
     let postfix = "";
-    let stack = ['#'];
+    let stack = ["#"];
     const inStackPriority = {
         "^": 1,
         "*": 2, "x": 2, "/": 2,
         "+": 3, "-": 3,
-        "(": 4, "#": 4, ")": 4
+        "(": 4, "#": 4
     };
     const inComingPriority = {
         "(": 0,
         "^": 1,
         "*": 2, "x": 2, "/": 2,
         "+": 3, "-": 3,
-        "#": 4, ")": 4
     };
-
+    const num = new Set(['0','1','2','3','4','5','6','7','8','9','.']);
     for (let i = 0; i < infix.length; i++) {
-        var ch = infix[i];
-        if (inComingPriority[ch] < inStackPriority[stack[stack.length - 1]]) {
-            stack.push(ch);
+        var inComing = infix[i];
+        if (num.has(inComing)) {
+            let left = false;
+            let right = false;
+            if (i - 1 >= 0) {
+                left = num.has(infix[i - 1]);
+            }
+            if (i + 1 <= infix.length - 1) {
+                right = num.has(infix[i + 1]);
+            }
+            if (!left && !right) {
+                postfix += "[" + inComing + "]";
+            }
+            if (left && !right) {
+                postfix += inComing + "]";
+            }
+            if (!left && right) {
+                postfix += "[" + inComing;
+            }
+            if (left && right) {
+                postfix += inComing;
+            }
+        } 
+        else if (inComing == ")") {
+            while (stack[stack.length - 1] != "(") {
+                postfix += stack[stack.length - 1];
+                stack.pop();    
+            }
+            stack.pop(); // pop "("
         }
-        else {
-            
+        else if (inComingPriority[inComing] >= inStackPriority[stack[stack.length - 1]]) {
+            while (inComingPriority[inComing] >= inStackPriority[stack[stack.length - 1]]) {
+                postfix += stack[stack.length - 1];
+                stack.pop();
+            }
+            stack.push(inComing);
         }
+        else if (inComingPriority[inComing] < inStackPriority[stack[stack.length - 1]]) {
+            stack.push(inComing);
+        }
+    }
+    while (stack.length > 1) {
+        postfix += stack[stack.length - 1];
+        stack.pop();
     }
     return postfix;
 }
