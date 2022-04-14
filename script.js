@@ -12,7 +12,7 @@ function calculate(inputData) {
     return evaluatePostfix(postfix).toString();
 }
 
-function infixToPostfix(infix) { // not finished
+function infixToPostfix(infix) { // not finished yet
     let postfix = "";
     let stack = ['#'];
 
@@ -45,7 +45,7 @@ function infixToPostfix(infix) { // not finished
     return postfix;
 }
 
-function evaluatePostfix(postfix) { // not finished
+function evaluatePostfix(postfix) { // not finished yet
     return 0;
 }
 
