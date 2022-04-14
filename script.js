@@ -8,7 +8,6 @@ function userClick() {
 
 function calculate(inputData) {
     let postfix = infixToPostfix(inputData);
-    console.log(postfix); // for testing
     return evaluatePostfix(postfix).toString();
 }
 
@@ -27,7 +26,7 @@ function infixToPostfix(infix) {
         "*": 2, "x": 2, "/": 2,
         "+": 3, "-": 3,
     };
-    const num = new Set(['0','1','2','3','4','5','6','7','8','9','.']);
+    const num = new Set(["0","1","2","3","4","5","6","7","8","9","."]);
     for (let i = 0; i < infix.length; i++) {
         var inComing = infix[i];
         if (num.has(inComing)) {
@@ -78,5 +77,50 @@ function infixToPostfix(infix) {
 }
 
 function evaluatePostfix(postfix) { // not finished yet
-    return 0;
+    const order = [];
+    const stack = [];
+    for (let i = 0; i < postfix.length; i++) {
+        var ch = postfix[i];
+        if (ch != "[") {
+            order.push(ch);
+        }        
+        if (ch == "[") {
+            let tmp = "";
+            i++;
+            while (postfix[i] != "]") {
+                tmp += postfix[i];
+                i++;
+            }
+            order.push(parseFloat(tmp));
+        }
+    }
+    for (let i = 0; i < order.length; i++) {
+        var inComing = order[i];
+        var type = typeof(inComing);
+        if (type == "number") {
+            stack.push(inComing);
+        }
+        if (type != "number") {
+            var op2 = stack[stack.length - 1];
+            stack.pop();
+            var op1 = stack[stack.length - 1];
+            stack.pop();
+            if (inComing == "^") {
+                stack.push(Math.pow(op1, op2));
+            }
+            if (inComing == "+") {
+                stack.push(op1 + op2);
+            }
+            if (inComing == "-") {
+                stack.push(op1 - op2);
+            }
+            if (inComing == "*" || inComing == "x") {
+                stack.push(op1 * op2);
+            }
+            if (inComing == "/") {
+                stack.push(op1 / op2);
+            }
+        }
+    }
+    return stack[0];
 }
