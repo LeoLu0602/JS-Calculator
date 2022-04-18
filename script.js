@@ -47,7 +47,17 @@ class complexNumber {
     }
 
     div(num) {
+        const result = new complexNumber("0");
+        result.Re = (this.Re * num.Re + this.Im * num.Im) / (num.Re * num.Re + num.Im * num.Im);
+        result.Im = ((-1) * this.Re * num.Im + this.Im * num.Re) / (num.Re * num.Re + num.Im * num.Im);
+        return result;
+    }
 
+    conj() {
+        const result = new complexNumber("0");
+        result.Re = this.Re;
+        result.Im = (-1) * this.Im;
+        return result;
     }
 }
 
@@ -161,7 +171,6 @@ function evaluatePostfix(postfix) {
     for (let i = 0; i < order.length; i++) {
         var inComing = order[i];
         var type = typeof(inComing);
-        console.log(type)
         if (type == "object") {
             stack.push(inComing);
         }
