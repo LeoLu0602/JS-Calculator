@@ -19,8 +19,7 @@ class complexNumber {
     pow(num) {
         const result = new complexNumber("0");
         if (this.Im == 0 && num.Im == 0) {
-            result.Re = this.Re + num.Re;
-            result.Im = this.Im + num.Im;
+            result.Re = Math.pow(this.Re, num.Re);
         }
         return result  
     }
@@ -64,6 +63,7 @@ class complexNumber {
 function userClick() {
     let ans = "Ans: ";
     let inputData = document.getElementById("inputData").value;
+    console.log(typeof(inputData))
     let outputData = calculate(inputData);
     ans += outputData;
     document.getElementById("ans").innerHTML = ans;
@@ -75,8 +75,8 @@ function calculate(inputData) {
     return evaluatePostfix(postfix);
 }
 
-function infixToPostfix(inputData) {
-    let infix = [];
+function infixToPostfix(inputData) { 
+    let infix = []; // note that inputData is a string
     let postfix = "";
     let stack = ["#"];
     const inStackPriority = {
@@ -94,6 +94,11 @@ function infixToPostfix(inputData) {
     const num = new Set(["0","1","2","3","4","5","6","7","8","9",".", "N", "i"]);
     for (let i = 0; i < inputData.length; i++) {
         infix.push(inputData[i]);
+        if (i + 1 < inputData.length) {
+            if (inputData[i] == ")" && inputData[i + 1] == "(") {
+                infix.push("x");
+            }
+        }
     }
     for (let i = 0; i < infix.length; i++) {
         var inComing = infix[i];
