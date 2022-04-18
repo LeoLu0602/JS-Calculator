@@ -40,7 +40,10 @@ class complexNumber {
     }
 
     mul(num) {
-        
+        const result = new complexNumber("0");
+        result.Re = this.Re * num.Re - this.Im * num.Im;
+        result.Im = this.Re * num.Im + this.Im * num.Re;
+        return result;
     }
 
     div(num) {
