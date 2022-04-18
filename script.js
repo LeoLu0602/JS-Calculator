@@ -8,6 +8,7 @@ function userClick() {
 
 function calculate(inputData) {
     let postfix = infixToPostfix(inputData);
+    console.log(postfix); // for testing
     return evaluatePostfix(postfix).toString();
 }
 
@@ -76,7 +77,7 @@ function infixToPostfix(infix) {
     return postfix;
 }
 
-function evaluatePostfix(postfix) { // not finished yet
+function evaluatePostfix(postfix) {
     const order = [];
     const stack = [];
     for (let i = 0; i < postfix.length; i++) {
