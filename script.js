@@ -1,3 +1,44 @@
+class complexNumber {
+    constructor(num) {
+        if (num.search("i") == -1) { // num is real
+            this.Re = parseFloat(num);
+            this.Im = 0;
+        }
+        if (num.search("i") != -1) { // num is not real
+            if (num == "i") {
+                this.Re = 1;
+                this.Im = 0;
+            }
+            if (num != "i") { // num = ki, k != 0
+                this.Re = parseFloat(num.slice(0, num.length - 1));
+                this.Im = 0;
+            }
+        }
+    }
+
+    add(num) {
+        const result = new complexNumber("0");
+        result.Re = this.Re + num.Re;
+        result.Im = this.Im + num.Im;
+        return result;
+    }
+
+    sub(num) {
+        const result = new complexNumber("0");
+        result.Re = this.Re - num.Re;
+        result.Im = this.Im - num.Im;
+        return result;
+    }
+
+    mul(num) {
+
+    }
+
+    div(num) {
+
+    }
+}
+
 function userClick() {
     let ans = "Ans: ";
     let inputData = document.getElementById("inputData").value;
@@ -28,7 +69,7 @@ function infixToPostfix(inputData) {
         "*": 2, "x": 2, "/": 2,
         "+": 3, "-": 3,
     };
-    const num = new Set(["0","1","2","3","4","5","6","7","8","9",".", "N"]);
+    const num = new Set(["0","1","2","3","4","5","6","7","8","9",".", "N", "i"]);
     for (let i = 0; i < inputData.length; i++) {
         infix.push(inputData[i]);
     }
@@ -101,8 +142,11 @@ function evaluatePostfix(postfix) {
                 i++;
             }
             order.push(parseFloat(tmp));
+            var tmpComplexNumber = new complexNumber(tmp);
+            order.push(tmpComplexNumber);
         }
     }
+
     for (let i = 0; i < order.length; i++) {
         var inComing = order[i];
         var type = typeof(inComing);
