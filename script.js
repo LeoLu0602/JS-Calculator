@@ -11,7 +11,8 @@ function calculate(inputData) {
     return evaluatePostfix(postfix).toString();
 }
 
-function infixToPostfix(infix) {
+function infixToPostfix(inputData) {
+    let infix = [];
     let postfix = "";
     let stack = ["#"];
     const inStackPriority = {
@@ -26,10 +27,17 @@ function infixToPostfix(infix) {
         "*": 2, "x": 2, "/": 2,
         "+": 3, "-": 3,
     };
-    const num = new Set(["0","1","2","3","4","5","6","7","8","9","."]);
+    const num = new Set(["0","1","2","3","4","5","6","7","8","9",".", "N"]);
+    for (let i = 0; i < inputData.length; i++) {
+        infix.push(inputData[i]);
+    }
     for (let i = 0; i < infix.length; i++) {
         var inComing = infix[i];
-        if (num.has(inComing)) {
+        if (inComing == "-" && (i == 0 || infix[i - 1] == "(")) {
+            postfix += "[" + inComing;
+            infix[i] = "N";
+        }
+        else if (num.has(inComing)) {
             let left = false;
             let right = false;
             if (i - 1 >= 0) {
@@ -76,7 +84,7 @@ function infixToPostfix(infix) {
     return postfix;
 }
 
-function evaluatePostfix(postfix) { // not finished yet
+function evaluatePostfix(postfix) {
     const order = [];
     const stack = [];
     for (let i = 0; i < postfix.length; i++) {
