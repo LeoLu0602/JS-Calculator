@@ -6,14 +6,23 @@ class complexNumber {
         }
         if (num.search("i") != -1) { // num is not real
             if (num == "i") {
-                this.Re = 1;
-                this.Im = 0;
+                this.Re = 0;
+                this.Im = 1;
             }
             if (num != "i") { // num = ki, k != 0
-                this.Re = parseFloat(num.slice(0, num.length - 1));
-                this.Im = 0;
+                this.Re = 0;
+                this.Im = parseFloat(num.slice(0, num.length - 1));
             }
         }
+    }
+
+    pow(num) {
+        const result = new complexNumber("0");
+        if (this.Im == 0 && num.Im == 0) {
+            result.Re = this.Re + num.Re;
+            result.Im = this.Im + num.Im;
+        }
+        return result  
     }
 
     add(num) {
@@ -31,7 +40,7 @@ class complexNumber {
     }
 
     mul(num) {
-
+        
     }
 
     div(num) {
@@ -50,7 +59,7 @@ function userClick() {
 function calculate(inputData) {
     let postfix = infixToPostfix(inputData);
     console.log(postfix); // for testing
-    return evaluatePostfix(postfix).toString();
+    return evaluatePostfix(postfix);
 }
 
 function infixToPostfix(inputData) {
@@ -141,7 +150,6 @@ function evaluatePostfix(postfix) {
                 tmp += postfix[i];
                 i++;
             }
-            order.push(parseFloat(tmp));
             var tmpComplexNumber = new complexNumber(tmp);
             order.push(tmpComplexNumber);
         }
@@ -150,30 +158,45 @@ function evaluatePostfix(postfix) {
     for (let i = 0; i < order.length; i++) {
         var inComing = order[i];
         var type = typeof(inComing);
-        if (type == "number") {
+        console.log(type)
+        if (type == "object") {
             stack.push(inComing);
         }
-        if (type != "number") {
+        if (type != "object") {
             var op2 = stack[stack.length - 1];
             stack.pop();
             var op1 = stack[stack.length - 1];
             stack.pop();
+
             if (inComing == "^") {
-                stack.push(Math.pow(op1, op2));
+                stack.push(op1.pow(op2));
             }
             if (inComing == "+") {
-                stack.push(op1 + op2);
+                stack.push(op1.add(op2));
             }
             if (inComing == "-") {
-                stack.push(op1 - op2);
+                stack.push(op1.sub(op2));
             }
             if (inComing == "*" || inComing == "x") {
-                stack.push(op1 * op2);
+                stack.push(op1.mul(op2));
             }
             if (inComing == "/") {
-                stack.push(op1 / op2);
+                stack.push(op1.div(op2));
             }
         }
     }
-    return stack[0];
+
+    let ans = "";
+    if (stack[0].Im == 0) {
+        ans = stack[0].Re.toString();
+    }
+    if (stack[0].Im != 0) {
+        if (stack[0].Im == 1) {
+            ans = stack[0].Re.toString() + "+i";
+        }
+        if (stack[0].Im != 1) {
+            ans = stack[0].Re.toString() + "+" + stack[0].Im.toString() + "i";
+        }    
+    } 
+    return ans;
 }
