@@ -9,7 +9,11 @@ class complexNumber {
                 this.Re = 0;
                 this.Im = 1;
             }
-            if (num != "i") { // num = ki, k != 0
+            if (num == "-i") {
+                this.Re = 0;
+                this.Im = -1;
+            }
+            if (num != "i" && num != "-i") {
                 this.Re = 0;
                 this.Im = parseFloat(num.slice(0, num.length - 1));
             }
@@ -63,7 +67,6 @@ class complexNumber {
 function userClick() {
     let ans = "Ans: ";
     let inputData = document.getElementById("inputData").value;
-    console.log(typeof(inputData))
     let outputData = calculate(inputData);
     ans += outputData;
     document.getElementById("ans").innerHTML = ans;
@@ -162,7 +165,7 @@ function evaluatePostfix(postfix) {
             order.push(ch);
         }        
         if (ch == "[") {
-            let tmp = "";
+            var tmp = "";
             i++;
             while (postfix[i] != "]") {
                 tmp += postfix[i];
@@ -204,16 +207,34 @@ function evaluatePostfix(postfix) {
     }
 
     let ans = "";
-    if (stack[0].Im == 0) {
-        ans = stack[0].Re.toString();
-    }
-    if (stack[0].Im != 0) {
+    if (stack[0].Re != 0 && stack[0].Im != 0) {
+        ans += stack[0].Re.toString();
         if (stack[0].Im == 1) {
-            ans = stack[0].Re.toString() + "+i";
+            ans += "+i";
         }
-        if (stack[0].Im != 1) {
-            ans = stack[0].Re.toString() + "+" + stack[0].Im.toString() + "i";
-        }    
-    } 
+        if (stack[0].Im == -1) {
+            ans += "-i"
+        }
+        if (stack[0].Im != 1 && stack[0].Im != -1) {
+            ans += stack[0].Im.toString() + "i";
+        }
+    }
+    if (stack[0].Re != 0 && stack[0].Im == 0) {
+        ans += stack[0].Re.toString();
+    }
+    if (stack[0].Re == 0 && stack[0].Im != 0) {
+        if (stack[0].Im == 1) {
+            ans += "i";
+        }
+        if (stack[0].Im == -1) {
+            ans += "-i"
+        }
+        if (stack[0].Im != 1 && stack[0].Im != -1) {
+            ans += stack[0].Im.toString() + "i";
+        }
+    }
+    if (stack[0].Re == 0 && stack[0].Im == 0) {
+        ans += "0";
+    }
     return ans;
 }
