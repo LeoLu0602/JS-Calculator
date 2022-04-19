@@ -65,14 +65,26 @@ class complexNumber {
 }
 
 function userClick() {
-    let ans = "Ans: ";
-    let inputData = document.getElementById("inputData").value;
-    let outputData = calculate(inputData);
-    ans += outputData;
-    document.getElementById("ans").innerHTML = ans;
-    historyArray.push(inputData + " = " + ans.slice(5));
-    if (document.getElementById("historyBtn").innerHTML == "Hide History") {
-        showHistory();
+    let textOnBtn = document.getElementById("calculateBtn").innerHTML;
+    
+    if (textOnBtn == "Calculate") {
+        let ans = "Ans: ";
+        let inputData = document.getElementById("inputData").value;
+        let outputData = calculate(inputData);
+        ans += outputData;
+        document.getElementById("ans").innerHTML = ans;
+    
+        historyArray.push(inputData + " = " + ans.slice(5));
+        if (document.getElementById("historyBtn").innerHTML == "Hide History") {
+            showHistory();
+        }
+
+        document.getElementById("calculateBtn").innerHTML = "Clear";
+    }
+    else if (textOnBtn == "Clear") {
+        document.getElementById("inputData").value = "";
+        document.getElementById("ans").innerHTML = "Ans:";
+        document.getElementById("calculateBtn").innerHTML = "Calculate";
     }
 }
 
