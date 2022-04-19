@@ -70,6 +70,7 @@ function userClick() {
     let outputData = calculate(inputData);
     ans += outputData;
     document.getElementById("ans").innerHTML = ans;
+    historyArray.push(inputData + " = " + ans.slice(5));
 }
 
 function calculate(inputData) {
@@ -238,3 +239,29 @@ function evaluatePostfix(postfix) {
     }
     return ans;
 }
+
+function history() {
+    let history = "";
+    let textOnBtn = document.getElementById("historyBtn").innerHTML;
+    
+    if (textOnBtn == "Show History") {
+        if (historyArray.length == 0) {
+            history = "No History"
+        }
+        else if (historyArray.length != 0) {
+            for (let i = historyArray.length - 1; i >= 0; i--) {
+                history += historyArray[i] + "<br>";
+            }
+        }
+        textOnBtn = "Hide History";
+    }
+    else if (textOnBtn == "Hide History") {
+        history = ""
+        textOnBtn = "Show History";
+    }
+
+    document.getElementById("historyBtn").innerHTML = textOnBtn;
+    document.getElementById("history").innerHTML = history;
+}
+
+const historyArray = [];
