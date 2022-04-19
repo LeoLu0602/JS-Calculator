@@ -291,4 +291,13 @@ function showHistory() {
     document.getElementById("history").innerHTML = history;
 }
 
+function clearAllHistory() {
+    while (historyArray.length) {
+        historyArray.pop();
+    }
+    if (document.getElementById("historyBtn").innerHTML == "Hide History") {
+        showHistory();
+    }
+}
+
 const historyArray = [];
