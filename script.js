@@ -217,6 +217,9 @@ function evaluatePostfix(postfix) {
             ans += "-i"
         }
         if (stack[0].Im != 1 && stack[0].Im != -1) {
+            if (stack[0].Im > 0) {
+                ans += "+"
+            }
             ans += stack[0].Im.toString() + "i";
         }
     }
@@ -231,6 +234,9 @@ function evaluatePostfix(postfix) {
             ans += "-i"
         }
         if (stack[0].Im != 1 && stack[0].Im != -1) {
+            if (stack[0].Im > 0) {
+                ans += "+"
+            }
             ans += stack[0].Im.toString() + "i";
         }
     }
