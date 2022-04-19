@@ -71,6 +71,9 @@ function userClick() {
     ans += outputData;
     document.getElementById("ans").innerHTML = ans;
     historyArray.push(inputData + " = " + ans.slice(5));
+    if (document.getElementById("historyBtn").innerHTML == "Hide History") {
+        showHistory();
+    }
 }
 
 function calculate(inputData) {
@@ -247,26 +250,32 @@ function evaluatePostfix(postfix) {
 }
 
 function history() {
-    let history = "";
     let textOnBtn = document.getElementById("historyBtn").innerHTML;
     
     if (textOnBtn == "Show History") {
-        if (historyArray.length == 0) {
-            history = "No History"
-        }
-        else if (historyArray.length != 0) {
-            for (let i = historyArray.length - 1; i >= 0; i--) {
-                history += historyArray[i] + "<br>";
-            }
-        }
+        showHistory();
         textOnBtn = "Hide History";
     }
     else if (textOnBtn == "Hide History") {
-        history = ""
+        document.getElementById("history").innerHTML = "";
         textOnBtn = "Show History";
     }
 
     document.getElementById("historyBtn").innerHTML = textOnBtn;
+}
+
+function showHistory() {
+    let history = "";
+
+    if (historyArray.length == 0) {
+        history = "No History"
+    }
+    else if (historyArray.length != 0) {
+        for (let i = historyArray.length - 1; i >= 0; i--) {
+            history += historyArray[i] + "<br>";
+        }
+    }
+
     document.getElementById("history").innerHTML = history;
 }
 
